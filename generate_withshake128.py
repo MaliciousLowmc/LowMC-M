@@ -3,25 +3,18 @@ The tweak schedule is SHAKE128
 '''
 from sage.all import *
 import numpy as np
-
 from SHAKE128 import *
 
 
 blocksize = 128
 keysize = 128
 rounds = 10
-m = 3 #sbox size
-sboxsize = 3
+m = 3 # number of sboxes
+sboxsize = 3 #sbox size
 nonLsize = sboxsize*m #non-linear size
 num_dc = 5 #number of embedded differential characteristics
 tweaksize = 128
 
-
-sb = [0,1,3,6,7,4,5,2]
-ddt = [[0 for i in range(8)] for j in range(8)]
-for inputD in range(8):
-    for x in range(8):
-        ddt[inputD][sb[x]^sb[x^inputD]] += 1
 
 def generate_Kmatrix():
     roundkey_matrices = []
@@ -56,8 +49,8 @@ def generate_tweakdifferences():
         subtweaks1 = [0] * (rounds+1)
         subtweaks2 = [0] * (rounds+1)
 
-        tweak1 = list(np.random.randint(0,2,size=tweaksize))
-        tweak2 = list(np.random.randint(0,2,size=tweaksize))
+        tweak1 = list(np.random.randint(0,2,size=tweaksize))    # can be chosen by the user alternatively, both size and value,
+        tweak2 = list(np.random.randint(0,2,size=tweaksize))    # can be chosen by the user alternatively, both size and value,
         tstring1 = shake128(tweak1, blocksize+rounds*nonLsize)
         tstring2 = shake128(tweak2, blocksize+rounds*nonLsize)
         subtweaks1[0] = tstring1[:blocksize]
@@ -85,6 +78,8 @@ def generate_DC():
 
 
     plaintext_differences = []
+    # the plaintext_differences are input differences of the differential characteristics to be embedded,
+    # it can be chosen by the user along with the first subtweak difference.
     for i in range(num_dc):
         plaintext_differences.append(tweakdifferences[i][0][:nonLsize] + list(np.random.randint(0,2,size=blocksize-nonLsize)))
 
@@ -155,25 +150,9 @@ def generate_DC():
                 s += 'round {:3} '.format(r+1) + str(BS_differences[r][i]) + '\n'
         dcfile.write(s)
 
-    for r in range(rounds):
-        for j in range(len(BS_differences[r])):
-            print(BS_differences[r][j])
-        print('')   
-    print('')
-
-    for r in range(rounds):
-        for j in range(len(AM_differences[r])):
-            print(AM_differences[r][j])
-        print('')
-    print('')
-    for r in range(rounds+1):
-        for i in range(num_dc):
-            print(tweakdifferences[i][r])
-        print('')
 
 def generate_Lmatrix(differences, tweakdiff, r):
     Length = len(differences)
-    print(r,Length)
     Nonzero = [0]*sboxsize
     if r >= (rounds-1-num_dc):
         for i in range(m):
