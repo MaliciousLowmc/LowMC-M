@@ -7,6 +7,7 @@ Benchmark
 
 Generating LowMC-M
 ----
+The codes are stored inside the "generate" folder. After installing SageMath, simply run 
 This is a sage implementation of MALICIOUS instantiations based on LowMC block cipher familiy, called LowMC-M. 
 
 The file "shake128" is python implementation of SHAKE128. 
