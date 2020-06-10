@@ -2,9 +2,11 @@
 
 MALICIOUS is a framework of embedding backdoors into tweakable block ciphers. LowMC-M is a familiy of instantiations of MALICIOUS, which is based on the block cipher LowMC. This repository contains the code to benchmark the optimized implementation of LowMC-M using AVX2 instruction. It also contains the code to generate a concrete instance of LowMC-M, including the components of the cipher and the backdoor.
 
-dasf
+Benchmark
 ----
 
+Generating LowMC-M
+----
 This is a sage implementation of MALICIOUS instantiations based on LowMC block cipher familiy, called LowMC-M. 
 
 The file "shake128" is python implementation of SHAKE128. 
